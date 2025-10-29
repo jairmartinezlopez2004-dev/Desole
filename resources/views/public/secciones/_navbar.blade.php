@@ -14,6 +14,11 @@
     </ul>
 
     <div class="nav-actions">
+      <a href="{{ route('login') ?? url('/login') }}" class="login-btn" aria-label="Iniciar sesión">
+        <i class="fas fa-user"></i>
+        <span class="login-text">Iniciar sesión</span>
+      </a>
+
       <button id="cart-toggle" class="cart-btn" aria-label="Abrir carrito">
         <i class="fas fa-shopping-cart"></i> <span id="cart-count">0</span>
       </button>

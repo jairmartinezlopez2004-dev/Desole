@@ -13,17 +13,25 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Agregar campo role (admin, employee)
-            $table->enum('role', ['admin', 'employee'])->default('employee');
-            
-            // Agregar campo is_active (boolean)
-            $table->boolean('is_active')->default(true);
-            
-            // Agregar campo phone (opcional)
-            $table->string('phone', 20)->nullable();
-            
-            // Agregar campo address (opcional)
-            $table->text('address')->nullable();
+            // Agregar campo role (admin, employee) si no existe
+            if (!Schema::hasColumn('users', 'role')) {
+                $table->enum('role', ['admin', 'employee'])->default('employee');
+            }
+
+            // Agregar campo is_active (boolean) si no existe
+            if (!Schema::hasColumn('users', 'is_active')) {
+                $table->boolean('is_active')->default(true);
+            }
+
+            // Agregar campo phone (opcional) si no existe
+            if (!Schema::hasColumn('users', 'phone')) {
+                $table->string('phone', 20)->nullable();
+            }
+
+            // Agregar campo address (opcional) si no existe
+            if (!Schema::hasColumn('users', 'address')) {
+                $table->text('address')->nullable();
+            }
         });
     }
 
@@ -33,8 +41,19 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Eliminar los campos en caso de rollback
-            $table->dropColumn(['role', 'is_active', 'phone', 'address']);
+            // Eliminar los campos solo si existen (para evitar errores en rollback)
+            if (Schema::hasColumn('users', 'role')) {
+                $table->dropColumn('role');
+            }
+            if (Schema::hasColumn('users', 'is_active')) {
+                $table->dropColumn('is_active');
+            }
+            if (Schema::hasColumn('users', 'phone')) {
+                $table->dropColumn('phone');
+            }
+            if (Schema::hasColumn('users', 'address')) {
+                $table->dropColumn('address');
+            }
         });
     }
 };
