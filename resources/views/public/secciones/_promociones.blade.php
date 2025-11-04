@@ -1,4 +1,3 @@
-@extends('public.layout')
 
 @section('content')
 @php
